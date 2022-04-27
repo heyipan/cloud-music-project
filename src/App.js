@@ -1,16 +1,26 @@
-import GlobalStyle  from './style';
-import { IconStyle } from './assets/iconfont/iconfont';
-import { renderRoutes } from 'react-router-config'; //renderRoutes 读取路由配置转化为 Route 标签
-import routes from './routes/index.js';
-import { HashRouter } from 'react-router-dom';
+import React from "react";
+import { Provider } from "react-redux";
+import { useRoutes, HashRouter } from "react-router-dom";
+
+import routes from "./routes/index.js";
+import store from "./stores";
+
+import GlobalStyle from "./style";
+import { IconStyle } from "./assets/iconfont/iconfont";
+
+const MainPages = () => {
+  return useRoutes(routes);
+};
 
 function App() {
   return (
-    <HashRouter>
-      <GlobalStyle />
-      <IconStyle />
-      { renderRoutes (routes) }
-    </HashRouter>
+    <Provider store={store}>
+      <HashRouter>
+        <GlobalStyle />
+        <IconStyle />
+        <MainPages />
+      </HashRouter>
+    </Provider>
   );
 }
 
