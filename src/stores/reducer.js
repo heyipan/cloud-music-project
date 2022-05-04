@@ -5,8 +5,9 @@
  * @Date: 2022-04-27 16:49:28
  * @@Copyright: Copyright (c) 2022, Hand
  */
-import { combineReducers } from "redux-immutable";
+import { combineReducers } from 'redux-immutable';
+import { reducer as recommendReducer } from '../application/Recommend/store';
 
-export default combineReducers({
-  // 之后开发具体功能模块的时候添加 reducer
+export default combineReducers ({
+  recommend: recommendReducer,
 });
