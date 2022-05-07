@@ -1,25 +1,28 @@
 /*
  * @Descripttion:  存放 initialState 和 reducer 函数
- * @version: 
+ * @version:
  * @Author: 输入自己姓名
  * @Date: 2022-05-04 20:28:45
  */
-import * as actionTypes from './constants';
-import { fromJS } from 'immutable';// 这里用到 fromJS 把 JS 数据结构转化成 immutable 数据结构
+import * as actionTypes from "./constants";
+import { fromJS } from "immutable"; // 这里用到 fromJS 把 JS 数据结构转化成 immutable 数据结构
 
 const defaultState = fromJS({
   bannerList: [],
   recommendList: [],
+  enterLoading: true,
 });
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = defaultState, action) => {
-    switch (action.type) {
-      case actionTypes.CHANGE_BANNER:
-        return state.set ('bannerList', action.data);
-      case actionTypes.CHANGE_RECOMMEND_LIST:
-        return state.set ('recommendList', action.data);
-      default:
-        return state;
-    }
+  switch (action.type) {
+    case actionTypes.CHANGE_BANNER:
+      return state.set("bannerList", action.data);
+    case actionTypes.CHANGE_RECOMMEND_LIST:
+      return state.set("recommendList", action.data);
+    case actionTypes.CHANGE_ENTER_LOADING:
+      return state.set("enterLoading", action.data);
+    default:
+      return state;
   }
+};

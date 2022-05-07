@@ -1,9 +1,19 @@
 import { axiosInstance } from "./config";
 
 export const getBannerRequest = () => {
-  return axiosInstance.get('/banner');
-}
+  return axiosInstance.get("/banner");
+};
 
 export const getRecommendListRequest = () => {
-  return axiosInstance.get('/personalized');
-}
+  return axiosInstance.get("/personalized");
+};
+
+export const getHotSingerListRequest = (count) => {
+  return axiosInstance.get(`/top/artists?offset=${count}`);
+};
+
+export const getSingerListRequest = (area, type, alpha, count) => {
+  return axiosInstance.get(
+    `/artist/list?area=${area}&type=${type}&initial=${alpha.toLowerCase()}&offset=${count}`
+  );
+};
