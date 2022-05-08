@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo } from "react";
+import React, { memo } from "react";
 import { PropTypes } from "prop-types";
 
 import Scroll from "../../components/scroll";
@@ -16,7 +16,7 @@ function Horizon(props) {
             <ListItem
               key={item.key}
               className={`${value === item.key ? "selected" : ""}`}
-              onClick={() => handleClick(item.key)}
+              onClick={() => handleClick(item)}
             >
               {item.name}
             </ListItem>

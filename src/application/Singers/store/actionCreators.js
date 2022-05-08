@@ -77,9 +77,9 @@ export const refreshMoreHotSingerList = () => {
 };
 
 //第一次加载对应类别的歌手
-export const getSingerList = (category, alpha) => {
+export const getSingerList = (area, type, alpha) => {
   return (dispatch, getState) => {
-    getSingerListRequest(category, alpha, 0)
+    getSingerListRequest(area, type, alpha, 0)
       .then((res) => {
         const data = res.artists;
         dispatch(changeSingerList(data));
@@ -93,11 +93,11 @@ export const getSingerList = (category, alpha) => {
 };
 
 //加载更多歌手
-export const refreshMoreSingerList = (category, alpha) => {
+export const refreshMoreSingerList = (area, type, alpha) => {
   return (dispatch, getState) => {
     const pageCount = getState().getIn(["singers", "pageCount"]);
     const singerList = getState().getIn(["singers", "singerList"]).toJS();
-    getSingerListRequest(category, alpha, pageCount)
+    getSingerListRequest(area, type, alpha, pageCount)
       .then((res) => {
         const data = [...singerList, ...res.artists];
         dispatch(changeSingerList(data));
