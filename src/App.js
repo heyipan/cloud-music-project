@@ -7,6 +7,7 @@ import store from "./stores";
 
 import GlobalStyle from "./style";
 import { IconStyle } from "./assets/iconfont/iconfont";
+import { StoreProvider } from "./application/Singers/data";
 
 const MainPages = () => {
   return useRoutes(routes);
@@ -18,7 +19,9 @@ function App() {
       <HashRouter>
         <GlobalStyle />
         <IconStyle />
-        <MainPages />
+        <StoreProvider>
+          <MainPages />
+        </StoreProvider>
       </HashRouter>
     </Provider>
   );

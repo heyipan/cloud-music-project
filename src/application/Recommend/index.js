@@ -36,7 +36,7 @@ const Recommend = (props) => {
           <RecommendList recommendList={recommendListJS}></RecommendList>
         </div>
       </Scroll>
-      {enterLoading && <Loading />}
+      <Loading show={enterLoading} />
     </Content>
   );
 };

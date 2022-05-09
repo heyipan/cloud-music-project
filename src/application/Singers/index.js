@@ -1,13 +1,13 @@
-import React, { useState,useEffect, useCallback } from "react";
+import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import  LazyLoad, {forceCheck} from 'react-lazyload';
+import LazyLoad, { forceCheck } from "react-lazyload";
 
 import Horizen from "../../baseUI/horizon-item";
 import Scroll from "../../components/scroll";
 import { categoryTypes, alphaTypes } from "../../api/config";
 import { NavContainer, List, ListItem, ListContainer } from "./style";
 import Loading from "../../baseUI/loading";
-
+import { Store, CHANGE_CATEGORY, CHANGE_ALPHA } from "./data";
 
 import {
   getSingerList,
@@ -21,25 +21,38 @@ import {
 } from "./store/actionCreators";
 
 function Singers(props) {
-  const { singerList,pullUpLoading,pullDownLoading,pageCount,enterLoading } = props;
+  const { data, dispatch } = useContext(Store);
 
-  const {getHotSingerDispatch, updateDispatch,pullUpRefreshDispatch, pullDownRefreshDispatch} = props;
+  const { category, alpha } = data.toJS();
 
-  const [category, setCategory] = useState({});
-  const [alpha, setAlpha] = useState("");
+  const {
+    singerList,
+    pullUpLoading,
+    pullDownLoading,
+    pageCount,
+    enterLoading,
+  } = props;
 
+  const {
+    getHotSingerDispatch,
+    updateDispatch,
+    pullUpRefreshDispatch,
+    pullDownRefreshDispatch,
+  } = props;
 
   useEffect(() => {
-    getHotSingerDispatch();
-  },[])
+    if (!singerList.size) {
+      getHotSingerDispatch();
+    }
+  }, []);
 
-  const handleUpdateAlpha = ({key}) => {
-    setAlpha(key);
+  const handleUpdateAlpha = ({ key }) => {
+    dispatch({ type: CHANGE_ALPHA, data: key });
     updateDispatch(category.area, category.type, key);
   };
-  
-  const handleUpdateCatetory = ({key,type,area}) => {
-    setCategory({key,type,area});
+
+  const handleUpdateCatetory = ({ key, type, area }) => {
+    dispatch({ type: CHANGE_CATEGORY, data: { key, type, area } });
     updateDispatch(area, type, alpha);
   };
 
@@ -53,8 +66,22 @@ function Singers(props) {
           return (
             <ListItem key={item.accountId + "" + index}>
               <div className="img_wrapper">
-                <LazyLoad placeholder={<img width="100%" height="100%" src={require ('./singer.png')} alt="music"/>}>
-                    <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt="music"/>
+                <LazyLoad
+                  placeholder={
+                    <img
+                      width="100%"
+                      height="100%"
+                      src={require("./singer.png")}
+                      alt="music"
+                    />
+                  }
+                >
+                  <img
+                    src={`${item.picUrl}?param=300x300`}
+                    width="100%"
+                    height="100%"
+                    alt="music"
+                  />
                 </LazyLoad>
               </div>
               <span className="name">{item.name}</span>
@@ -66,10 +93,16 @@ function Singers(props) {
   };
 
   const handlePullUp = () => {
-    pullUpRefreshDispatch(category.area, category.type, alpha, category === '', pageCount);
+    pullUpRefreshDispatch(
+      category.area,
+      category.type,
+      alpha,
+      category === "",
+      pageCount
+    );
   };
-  
-  const handlePullDown = () => { 
+
+  const handlePullDown = () => {
     pullDownRefreshDispatch(category.area, category.type, alpha);
   };
 
@@ -88,14 +121,14 @@ function Singers(props) {
         value={alpha}
       />
       <ListContainer>
-        <Scroll 
-          pullUp={ handlePullUp }
-          pullDown = { handlePullDown }
-          pullUpLoading = { pullUpLoading }
-          pullDownLoading = { pullDownLoading }
+        <Scroll
+          pullUp={handlePullUp}
+          pullDown={handlePullDown}
+          pullUpLoading={pullUpLoading}
+          pullDownLoading={pullDownLoading}
           onScroll={forceCheck}
         >
-            {renderSingerList()}
+          {renderSingerList()}
         </Scroll>
         <Loading show={enterLoading}></Loading>
       </ListContainer>
