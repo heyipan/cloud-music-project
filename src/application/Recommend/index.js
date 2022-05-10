@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import { Outlet } from "react-router-dom";
 import { connect } from "react-redux";
 import { forceCheck } from "react-lazyload";
 
@@ -7,7 +7,7 @@ import * as actionTypes from "./store/actionCreators";
 import { Content } from "./style";
 import Slider from "../../components/slider";
 import Scroll from "../../components/scroll";
-import RecommendList from "../../components/list";
+import RecommendList from "./list";
 import Loading from "../../baseUI/loading/index";
 
 const Recommend = (props) => {
@@ -37,6 +37,7 @@ const Recommend = (props) => {
         </div>
       </Scroll>
       <Loading show={enterLoading} />
+      <Outlet />
     </Content>
   );
 };
