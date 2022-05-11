@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 
+import  Header  from './../../baseUI/header/index';
+
 import { Container } from "./style";
 
 function Album(props) {
   const navigate = useNavigate();
 
   const [showStatus, setShowStatus] = useState(true);
+
+  const handleBack = () => {
+    setShowStatus (false);
+  };
 
   return (
     <CSSTransition
@@ -21,12 +27,8 @@ function Album(props) {
         navigate("/recommend");
       }}
     >
-      <Container
-        onClick={() => {
-          setShowStatus(false);
-        }}
-      >
-        123123
+      <Container>
+        <Header title={"返回"} handleClick={handleBack}></Header>
       </Container>
     </CSSTransition>
   );
