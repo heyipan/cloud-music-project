@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Outlet, useRoutes } from "react-router-dom";
 
 import { getRankList } from "./store";
 import Scroll from "../../components/scroll";
@@ -78,7 +77,6 @@ function Rank(props) {
           <Loading show={loading} />
         </div>
       </Scroll>
-      <Outlet />
     </Container>
   );
 }

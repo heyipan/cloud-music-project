@@ -1,14 +1,35 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 
-const Home = () => {
+import { Container } from "./style";
+
+function Album(props) {
+  const navigate = useNavigate();
+
+  const [showStatus, setShowStatus] = useState(true);
+
   return (
-    <div>
-      <span className="iconfont menu">&#xe65c;</span>
-      <span className="title">网易云</span>
-      <span className="iconfont search">&#xe62b;</span>
-    </div>
+    <CSSTransition
+      in={showStatus}
+      timeout={300}
+      classNames="fly"
+      appear={true}
+      unmountOnExit
+      onExited={() => {
+        console.log(13);
+        navigate("/recommend");
+      }}
+    >
+      <Container
+        onClick={() => {
+          setShowStatus(false);
+        }}
+      >
+        123123
+      </Container>
+    </CSSTransition>
   );
-};
+}
 
-export default Home;
+export default React.memo(Album);
