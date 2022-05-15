@@ -6,6 +6,7 @@ import Home from "../application/Home";
 import Singers from "../application/Singers";
 import Rank from "../application/Rank";
 import Album from "../application/Album";
+import Singer from "../application/Singer";
 
 const routes = [
   {
@@ -30,10 +31,22 @@ const routes = [
       {
         path: "/singers",
         element: <Singers />,
+        children: [
+            {
+              path: "/singers/:id",
+              element: <Singer />,
+            }
+        ]
       },
       {
         path: "/rank",
         element: <Rank />,
+        children: [
+            {
+              path: "/rank/:id",
+              element: <Album />,
+            }
+        ]
       },
     ],
   },

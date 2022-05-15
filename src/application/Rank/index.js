@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { useNavigate, Outlet } from "react-router-dom";
 
 import { getRankList } from "./store";
 import Scroll from "../../components/scroll";
@@ -13,6 +14,8 @@ function Rank(props) {
 
   const { getRankListDataDispatch } = props;
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     getRankListDataDispatch();
   }, []);
@@ -23,13 +26,17 @@ function Rank(props) {
   const officialList = rankList.slice(0, globalStartIndex);
   const globalList = rankList.slice(globalStartIndex);
 
+  const enterDetail = (detail) => {
+    navigate(`/recommend/${detail.id}`);
+  }
+
   // 这是渲染榜单列表函数，传入 global 变量来区分不同的布局方式
   const renderRankList = (list, global) => {
     return (
       <List globalRank={global}>
         {list.map((item) => {
           return (
-            <ListItem key={item.id} tracks={item.tracks}>
+            <ListItem key={item.id} tracks={item.tracks} onClick={() => enterDetail(item)}>
               <div className="img_wrapper">
                 <img src={item.coverImgUrl} alt="" />
                 <div className="decorate"></div>
@@ -76,6 +83,7 @@ function Rank(props) {
           {renderRankList(globalList, true)}
           <Loading show={loading} />
         </div>
+        <Outlet />
       </Scroll>
     </Container>
   );

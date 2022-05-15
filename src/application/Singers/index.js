@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
 import LazyLoad, { forceCheck } from "react-lazyload";
+import { useNavigate,Outlet } from "react-router-dom";
 
 import Horizen from "../../baseUI/horizon-item";
 import Scroll from "../../components/scroll";
@@ -24,6 +25,8 @@ function Singers(props) {
   const { data, dispatch } = useContext(Store);
 
   const { category, alpha } = data.toJS();
+
+  const navigate = useNavigate();
 
   const {
     singerList,
@@ -58,13 +61,17 @@ function Singers(props) {
 
   const singerListJS = singerList ? singerList.toJS() : [];
 
+  const enterDetail = (id)  => {
+    navigate(`/singers/${id}`);
+  };
+
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
     return (
       <List>
         {singerListJS.map((item, index) => {
           return (
-            <ListItem key={item.accountId + "" + index}>
+            <ListItem key={item.accountId + "" + index} onClick={() => enterDetail(item.id)}>
               <div className="img_wrapper">
                 <LazyLoad
                   placeholder={
@@ -132,6 +139,7 @@ function Singers(props) {
         </Scroll>
         <Loading show={enterLoading}></Loading>
       </ListContainer>
+      <Outlet/>
     </NavContainer>
   );
 }
