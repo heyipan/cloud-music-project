@@ -2,16 +2,15 @@ import React, { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 
 import { getName } from "../../../api/utils";
-import ProgressCircle from '../../../baseUI/progress-circle';
+import ProgressCircle from "../../../baseUI/progress-circle";
 import { MiniPlayerContainer } from "./style";
 
 function MiniPlayer(props) {
-  const { song, fullScreen, toggleFullScreen } = props;
+  const { song, fullScreen, playing, percent } = props;
+
+  const { clickPlaying, toggleFullScreen } = props;
 
   const miniPlayerRef = useRef();
-
-  // 先 mock 一份 percent 数据
-  let percent = 0.2;
 
   return (
     <CSSTransition
@@ -32,7 +31,7 @@ function MiniPlayer(props) {
         <div className="icon">
           <div className="imgWrapper">
             <img
-              className="play"
+              className={`play ${playing ? "" : "pause"}`}
               src={song.al.picUrl}
               width="40"
               height="40"
@@ -45,14 +44,23 @@ function MiniPlayer(props) {
           <p className="desc">{getName(song.ar)}</p>
         </div>
         <div className="control">
-        <ProgressCircle radius={32} percent={percent}>
-           <i className="icon-mini iconfont icon-pause">&#xe650;</i>
-          {/* { playing ? 
-            <i className="icon-mini iconfont icon-pause" onClick={e => clickPlaying(e, false)}>&#xe650;</i>
-            :
-            <i className="icon-mini iconfont icon-play" onClick={e => clickPlaying(e, true)}>&#xe61e;</i> 
-          } */}
-        </ProgressCircle>
+          <ProgressCircle radius={32} percent={percent}>
+            {playing ? (
+              <i
+                className="icon-mini iconfont icon-pause"
+                onClick={(e) => clickPlaying(e, false)}
+              >
+                &#xe650;
+              </i>
+            ) : (
+              <i
+                className="icon-mini iconfont icon-play"
+                onClick={(e) => clickPlaying(e, true)}
+              >
+                &#xe61e;
+              </i>
+            )}
+          </ProgressCircle>
         </div>
         <div className="control">
           <i className="iconfont">&#xe640;</i>

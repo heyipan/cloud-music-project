@@ -8,10 +8,10 @@ import { getCount} from '../../api/utils'
 import  Header  from './../../baseUI/header/index';
 import Scroll from '../../components/scroll';
 import SongsList from '../SongsList';
-
 import {changeEnterLoading, getAlbumList} from './store/actionCreators'
 import {isEmptyObject} from '../../api/utils';
 import Loading from '../../baseUI/loading';
+import MusicNote from "../../baseUI/music-note/index";
 
 import { Container,TopDesc, Menu } from "./style";
 
@@ -26,6 +26,8 @@ function Album(props) {
   const { currentAlbum:currentAlbumImmutable, enterLoading } = props;
   const { getAlbumDataDispatch } = props;
 
+  const musicNoteRef = useRef ();
+  
   useEffect (() => {
       getAlbumDataDispatch(id);
   }, [getAlbumDataDispatch, id]);
@@ -61,8 +63,6 @@ function Album(props) {
     }
   }, [currentAlbum]);
 
-
-  
 
   const renderTopDesc = () => {
     return (
@@ -115,7 +115,9 @@ function Album(props) {
   };
 
   
-  
+  const musicAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation ({ x, y });
+  };
 
   return (
     <CSSTransition
@@ -141,12 +143,14 @@ function Album(props) {
                     collectCount={currentAlbum.subscribedCount}
                     showCollect={true}
                     showBackground={true}
+                    musicAnimation={musicAnimation}
                    />
                 </div>
               </Scroll>
           ) : null
         }
         <Loading show={enterLoading}/>
+        <MusicNote ref={musicNoteRef}></MusicNote>
       </Container>
     </CSSTransition>
   );

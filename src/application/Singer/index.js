@@ -10,6 +10,8 @@ import SongsList from "../SongsList";
 import Loading from "./../../baseUI/loading/index";
 import { getSingerInfo, changeEnterLoading } from "./store/actionCreators";
 
+import MusicNote from "../../baseUI/music-note/index";
+
 import {
   Container,
   ImgWrapper,
@@ -37,11 +39,17 @@ function Singer(props) {
   const songScroll = useRef();
   const header = useRef();
   const layer = useRef();
+
+  const musicNoteRef = useRef ();
   // 图片初始高度
   const initialHeight = useRef(0);
 
   // 往上偏移的尺寸，露出圆角
   const OFFSET = 0;
+
+  const musicAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({ x, y });
+  };
 
   useEffect(() => {
     let h = imageWrapper.current.offsetHeight;
@@ -126,10 +134,11 @@ function Singer(props) {
         <BgLayer ref={layer} />
         <SongListWrapper ref={songScrollWrapper}>
           <Scroll ref={songScroll} onScroll={handleScroll}>
-            <SongsList songs={songs} showCollect={false} />
+            <SongsList songs={songs} showCollect={false} musicAnimation={musicAnimation} />
           </Scroll>
         </SongListWrapper>
         <Loading show={loading} />
+        <MusicNote ref={musicNoteRef}></MusicNote>
       </Container>
     </CSSTransition>
   );
