@@ -11,7 +11,7 @@ import RecommendList from "./list";
 import Loading from "../../baseUI/loading/index";
 
 const Recommend = (props) => {
-  const { bannerList, recommendList, enterLoading } = props;
+  const { bannerList, recommendList, enterLoading, songsCount  } = props;
 
   const { getBannerDataDispatch, getRecommendListDataDispatch } = props;
 
@@ -29,7 +29,7 @@ const Recommend = (props) => {
   const recommendListJS = recommendList ? recommendList.toJS() : [];
 
   return (
-    <Content>
+    <Content play={songsCount}>
       <Scroll onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS}></Slider>
@@ -49,6 +49,7 @@ const mapStateToProps = (state) => ({
   bannerList: state.getIn(["recommend", "bannerList"]),
   recommendList: state.getIn(["recommend", "recommendList"]),
   enterLoading: state.getIn(["recommend", "enterLoading"]),
+  songsCount: state.getIn (['player', 'playList']).size,// 尽量减少 toJS 操作，直接取 size 属性就代表了 list 的长度
 });
 // 映射 dispatch 到 props 上
 const mapDispatchToProps = (dispatch) => {

@@ -23,7 +23,7 @@ function Album(props) {
   // 从路由中拿到歌单的 id
   const { id } = useParams();
 
-  const { currentAlbum:currentAlbumImmutable, enterLoading } = props;
+  const { currentAlbum:currentAlbumImmutable, enterLoading, songsCount } = props;
   const { getAlbumDataDispatch } = props;
 
   const musicNoteRef = useRef ();
@@ -130,7 +130,7 @@ function Album(props) {
         navigate(-1);
       }}
     >
-      <Container>
+      <Container play={songsCount}>
         <Header ref={headerEl} title={title} handleClick={handleBack} isMarquee={isMarquee}></Header>
         {
           !isEmptyObject(currentAlbum) ? (
@@ -160,6 +160,7 @@ function Album(props) {
 const mapStateToProps = (state) => ({
     currentAlbum: state.getIn(['album', 'currentAlbum']),
     enterLoading: state.getIn(['album', 'enterLoading']),
+    songsCount: state.getIn(['player', 'playList']).size,// 尽量减少 toJS 操作，直接取 size 属性就代表了 list 的长度
   });
   // 映射 dispatch 到 props 上
   const mapDispatchToProps = (dispatch) => {

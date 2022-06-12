@@ -34,6 +34,7 @@ function Singers(props) {
     pullDownLoading,
     pageCount,
     enterLoading,
+    songsCount
   } = props;
 
   const {
@@ -127,7 +128,7 @@ function Singers(props) {
         handleClick={handleUpdateAlpha}
         value={alpha}
       />
-      <ListContainer>
+      <ListContainer play={songsCount}>
         <Scroll
           pullUp={handlePullUp}
           pullDown={handlePullDown}
@@ -150,6 +151,7 @@ const mapStateToProps = (state) => ({
   pullUpLoading: state.getIn(["singers", "pullUpLoading"]),
   pullDownLoading: state.getIn(["singers", "pullDownLoading"]),
   pageCount: state.getIn(["singers", "pageCount"]),
+  songsCount: state.getIn(['player', 'playList']).size,// 尽量减少 toJS 操作，直接取 size 属性就代表了 list 的长度
 });
 const mapDispatchToProps = (dispatch) => {
   return {
