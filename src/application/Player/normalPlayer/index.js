@@ -26,6 +26,7 @@ function NormalPlayer(props) {
     handlePrev,
     handleNext,
     changeMode,
+    togglePlayList,
   } = props;
 
   const normalPlayerRef = useRef();
@@ -117,6 +118,11 @@ function NormalPlayer(props) {
     return content;
   };
 
+  const handleTogglePlayList = (e) => {
+    togglePlayList(true);
+    e.stopPropagation();
+  };
+
   return (
     <CSSTransition
       classNames="normal"
@@ -189,7 +195,7 @@ function NormalPlayer(props) {
             <div className="icon i-right" onClick={handleNext}>
               <i className="iconfont">&#xe718;</i>
             </div>
-            <div className="icon i-right">
+            <div className="icon i-right" onClick={handleTogglePlayList}>
               <i className="iconfont">&#xe640;</i>
             </div>
           </Operators>

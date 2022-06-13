@@ -9,9 +9,10 @@ import {
   changePlayMode,
   changeFullScreen,
 } from "./store/actionCreators";
-import { playMode } from '../../api/config';
+import { playMode } from "../../api/config";
 import { getSongUrl, isEmptyObject, shuffle, findIndex } from "../../api/utils";
 import Toast from "./../../baseUI/toast/index";
+import PlayList from "./play-list";
 
 import MiniPlayer from "./miniPlayer";
 import NormalPlayer from "./normalPlayer";
@@ -33,6 +34,7 @@ function Player(props) {
     changePlayListDispatch, //改变playList
     changeModeDispatch, //改变mode
     toggleFullScreenDispatch,
+    togglePlayListDispatch,
   } = props;
 
   const playList = immutablePlayList.toJS();
@@ -52,7 +54,7 @@ function Player(props) {
   const [modeText, setModeText] = useState("");
 
   const toastRef = useRef();
-  const songReady = useRef (true);
+  const songReady = useRef(true);
 
   useEffect(() => {
     if (
@@ -64,20 +66,20 @@ function Player(props) {
       return;
     }
     const current = playList[currentIndex];
-    setPreSong (current);
+    setPreSong(current);
     songReady.current = false; // 把标志位置为 false, 表示现在新的资源没有缓冲完成，不能切歌
-    changeCurrentDispatch (current);// 赋值 currentSong
-    audioRef.current.src = getSongUrl (current.id);
-    setTimeout (() => {
+    changeCurrentDispatch(current); // 赋值 currentSong
+    audioRef.current.src = getSongUrl(current.id);
+    setTimeout(() => {
       // 注意，play 方法返回的是一个 promise 对象
-      audioRef.current.play ().then (() => {
+      audioRef.current.play().then(() => {
         songReady.current = true;
       });
     });
     togglePlayingDispatch(true); //播放状态
     setCurrentTime(0); //从头开始播放
     setDuration((current.dt / 1000) | 0); //时长
-  }, [playList, currentIndex]);
+  }, [immutablePlayList, currentIndex]);
 
   useEffect(() => {
     playing ? audioRef.current.play() : audioRef.current.pause();
@@ -166,7 +168,7 @@ function Player(props) {
 
   const handleError = () => {
     songReady.current = true;
-    alert ("播放出错");
+    alert("播放出错");
   };
 
   return (
@@ -179,6 +181,7 @@ function Player(props) {
           percent={percent} //进度
           toggleFullScreen={toggleFullScreenDispatch}
           clickPlaying={clickPlaying}
+          togglePlayList={togglePlayListDispatch}
         />
       )}
       {isEmptyObject(currentSong) ? null : (
@@ -197,10 +200,17 @@ function Player(props) {
           handlePrev={handlePrev}
           handleNext={handleNext}
           changeMode={changeMode}
+          togglePlayList={togglePlayListDispatch}
         />
       )}
-      <audio ref={audioRef} onTimeUpdate={updateTime} onEnded={handleEnd} onError={handleError}></audio>
-      <Toast text={modeText} ref={toastRef}></Toast>  
+      <audio
+        ref={audioRef}
+        onTimeUpdate={updateTime}
+        onEnded={handleEnd}
+        onError={handleError}
+      ></audio>
+      <PlayList />
+      <Toast text={modeText} ref={toastRef}></Toast>
     </div>
   );
 }
@@ -245,7 +255,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // 将ui组件包装成容器组件
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(React.memo(Player));
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Player));

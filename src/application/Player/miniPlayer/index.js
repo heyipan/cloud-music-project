@@ -8,9 +8,14 @@ import { MiniPlayerContainer } from "./style";
 function MiniPlayer(props) {
   const { song, fullScreen, playing, percent } = props;
 
-  const { clickPlaying, toggleFullScreen } = props;
+  const { clickPlaying, toggleFullScreen, togglePlayList } = props;
 
   const miniPlayerRef = useRef();
+
+  const handleTogglePlayList = (e) => {
+    togglePlayList(true);
+    e.stopPropagation();
+  };
 
   return (
     <CSSTransition
@@ -62,7 +67,7 @@ function MiniPlayer(props) {
             )}
           </ProgressCircle>
         </div>
-        <div className="control">
+        <div className="control" onClick={handleTogglePlayList}>
           <i className="iconfont">&#xe640;</i>
         </div>
       </MiniPlayerContainer>
