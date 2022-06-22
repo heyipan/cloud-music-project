@@ -27,8 +27,8 @@ function Rank(props) {
   const globalList = rankList.slice(globalStartIndex);
 
   const enterDetail = (detail) => {
-    navigate(`/recommend/${detail.id}`);
-  }
+    navigate(`/rank/${detail.id}`);
+  };
 
   // 这是渲染榜单列表函数，传入 global 变量来区分不同的布局方式
   const renderRankList = (list, global) => {
@@ -36,7 +36,11 @@ function Rank(props) {
       <List globalRank={global}>
         {list.map((item) => {
           return (
-            <ListItem key={item.id} tracks={item.tracks} onClick={() => enterDetail(item)}>
+            <ListItem
+              key={item.id}
+              tracks={item.tracks}
+              onClick={() => enterDetail(item)}
+            >
               <div className="img_wrapper">
                 <img src={item.coverImgUrl} alt="" />
                 <div className="decorate"></div>
@@ -93,7 +97,7 @@ function Rank(props) {
 const mapStateToProps = (state) => ({
   rankList: state.getIn(["rank", "rankList"]),
   loading: state.getIn(["rank", "loading"]),
-  songsCount: state.getIn(['player', 'playList']).size,// 尽量减少 toJS 操作，直接取 size 属性就代表了 list 的长度
+  songsCount: state.getIn(["player", "playList"]).size, // 尽量减少 toJS 操作，直接取 size 属性就代表了 list 的长度
 });
 // 映射 dispatch 到 props 上
 const mapDispatchToProps = (dispatch) => {

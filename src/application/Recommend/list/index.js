@@ -42,7 +42,6 @@ function RecommendList(props) {
                     alt="music"
                   />
                 </LazyLoad>
-
                 <div className="play_count">
                   <i className="iconfont play">&#xe885;</i>
                   <span className="count">{getCount(item.playCount)}</span>

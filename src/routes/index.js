@@ -32,21 +32,21 @@ const routes = [
         path: "/singers",
         element: <Singers />,
         children: [
-            {
-              path: "/singers/:id",
-              element: <Singer />,
-            }
-        ]
+          {
+            path: "/singers/:id",
+            element: <Singer />,
+          },
+        ],
       },
       {
         path: "/rank",
         element: <Rank />,
         children: [
-            {
-              path: "/rank/:id",
-              element: <Album />,
-            }
-        ]
+          {
+            path: "/rank/:id",
+            element: <Album />,
+          },
+        ],
       },
     ],
   },
